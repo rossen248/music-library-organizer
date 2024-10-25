@@ -20,9 +20,8 @@ def sanitize_filename(name):
     Returns:
         str: Sanitized string safe for use as directory name
     """
-    # Windows reserved characters and common problematic characters
-    # / \ : * ? " < > | ¿ ® © % $ @ ! ' ` + = {} [] ; ,
-    invalid_chars_pattern = r'[<>:"/\\|?*¿®©%$@!\'`+=\{\}\[\];,]'
+    # Windows reserved characters
+    invalid_chars_pattern = r'/\?*"<>|'
 
     # Replace invalid characters with underscore
     sanitized = re.sub(invalid_chars_pattern, '_', name)
@@ -54,14 +53,28 @@ def organize_music(source_dir, destination_dir):
     # Track statistics
     processed_files = 0
     deleted_duplicates = 0
+    deleted_spotdl = 0
     error_files = 0
 
     # Walk through the source directory
     for root, _, files in os.walk(source_dir):
         for filename in files:
-            if any(filename.lower().endswith(ext) for ext in music_extensions):
-                file_path = os.path.join(root, filename)
+            file_path = os.path.join(root, filename)
 
+            # Handle .spotdl files
+            if filename.endswith('.spotdl'):
+                try:
+                    os.remove(file_path)
+                    print(f"Deleted .spotdl file: {filename}")
+                    deleted_spotdl += 1
+                    continue
+                except Exception as e:
+                    print(f"Error deleting .spotdl file {filename}: {str(e)}")
+                    error_files += 1
+                    continue
+
+            # Process music files
+            if any(filename.lower().endswith(ext) for ext in music_extensions):
                 try:
                     # Extract metadata
                     audio = File(file_path, easy=True)
@@ -128,6 +141,7 @@ def organize_music(source_dir, destination_dir):
     print("\nOrganization complete!")
     print(f"Successfully organized: {processed_files} files")
     print(f"Duplicates deleted: {deleted_duplicates} files")
+    print(f".spotdl files deleted: {deleted_spotdl} files")
     print(f"Errors encountered: {error_files} files")
 
 
