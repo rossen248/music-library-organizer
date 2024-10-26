@@ -21,7 +21,7 @@ def sanitize_filename(name):
         str: Sanitized string safe for use as directory name
     """
     # Windows reserved characters
-    invalid_chars_pattern = r'/\?*"<>|'
+    invalid_chars_pattern = r'[<>:"/\\|?*]'
 
     # Replace invalid characters with underscore
     sanitized = re.sub(invalid_chars_pattern, '_', name)
@@ -146,7 +146,9 @@ def organize_music(source_dir, destination_dir):
 
 
 if __name__ == "__main__":
-    source_directory = "C:/Users/rosse/Documents/projects/MusicMaid/testomgeving/raws"  # Directory containing your downloaded music
-    destination_directory = "C:/Users/rosse/Documents/projects/MusicMaid/testomgeving/filtered"  # Where you want the organized folders
+    source_directory = "C:/Users/rosse/Documents/projects/iPod/Unsorted"  # Directory containing your downloaded music
+    destination_directory = "C:/Users/rosse/Documents/projects/iPod/Artists"  # Where you want the organized folders
 
     organize_music(source_directory, destination_directory)
+
+    input("\nPress Enter to exit...")
