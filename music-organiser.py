@@ -256,8 +256,8 @@ Examples:
 if __name__ == "__main__":
     # If no command line arguments, use the original hardcoded paths for backwards compatibility
     if len(sys.argv) == 1:
-        source_directory = "C:/Users/rosse/Documents/projects/iPod/Unsorted"
-        destination_directory = "C:/Users/rosse/Documents/projects/iPod/Artists"
+        source_directory = "~/Downloads/Music"
+        destination_directory = "~/Music/Library"
 
         print("🎵 Using default directories...")
         organizer = MusicOrganizer(source_directory, destination_directory)
